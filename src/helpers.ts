@@ -9,6 +9,7 @@ export function getUser(address: Address): User {
     user = new User(address.toHexString())
     user.totalRewardsClaimed = BigInt.fromI32(0)
     user.totalTokens = BigInt.fromI32(0)
+    user.totalStakedTokens = BigInt.fromI32(0)
   }
 
   return user!;
@@ -21,6 +22,18 @@ export function changeUserTokenBalance(address: Address, amount: BigInt, add: bo
     user.totalTokens = user.totalTokens.plus(amount)
   } else {
     user.totalTokens = user.totalTokens.minus(amount)
+  }
+
+  user.save()
+}
+
+export function changeUserStakedTokenBalance(address: Address, amount: BigInt, add: boolean): void {
+  let user: User = getUser(address)
+
+  if (add) {
+    user.totalStakedTokens = user.totalStakedTokens.plus(amount)
+  } else {
+    user.totalStakedTokens = user.totalStakedTokens.minus(amount)
   }
 
   user.save()
