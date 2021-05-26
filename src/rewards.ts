@@ -10,7 +10,6 @@ export function handleClaimed(event: Claimed): void {
   let user: User = getUser(userEthereumAddress)
 
   user.totalRewardsClaimed = user.totalRewardsClaimed.plus(event.params.cumulativeAmount);
-  user.totalTokens = user.totalTokens.plus(event.params.cumulativeAmount);
 
   user.save()
 }
