@@ -1,6 +1,5 @@
-type ExampleEntity @entity {
+type User @entity {
   id: ID!
-  count: BigInt!
-  index: BigInt! # uint256
-  account: Bytes! # address
+  totalRewardsClaimed: BigInt!
+  totalTokens: BigInt!
 }

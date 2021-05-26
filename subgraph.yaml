@@ -3,27 +3,42 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Contract
+    name: CumulativeMerkleDistributor
     network: ropsten
     source:
       address: "0xbf37470d08DbAf6d71586274C81FEDC0297870e6"
-      abi: Contract
+      abi: CumulativeMerkleDistributor
+      startBlock: 10179849
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - Claimed
-        - OwnershipTransferred
-        - RootUpdated
       abis:
-        - name: Contract
-          file: ./abis/Contract.json
+        - name: CumulativeMerkleDistributor
+          file: ./abi/contracts/cumulative-merkle-distributor/CumulativeMerkleDistributor.sol/CumulativeMerkleDistributor.json
       eventHandlers:
         - event: Claimed(uint256,address,uint256,uint256)
           handler: handleClaimed
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: RootUpdated(uint256,bytes32,bytes32)
-          handler: handleRootUpdated
-      file: ./src/mapping.ts
+      file: ./src/rewards.ts
+  - kind: ethereum/contract
+    name: Token 
+    network: ropsten
+    source:
+      address: "0x89EF1daFf7b1fADa010E07AAA994F54e4AeC3fF6"
+      abi: Token
+      startBlock: 10268886
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: Token
+          file: ./abi/contracts/governance/token/Token.sol/Token.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTokenTransfer
+      file: ./src/token.ts
