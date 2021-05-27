@@ -10,6 +10,9 @@ export function getUser(address: Address): User {
     user.totalTokens = BigInt.fromI32(0)
     user.totalStakedTokens = BigInt.fromI32(0)
     user.votingPower = BigInt.fromI32(0)
+    user.delegatedVotingPower = BigInt.fromI32(0)
+    user.proposingPower = BigInt.fromI32(0)
+    user.delegatedProposingPower = BigInt.fromI32(0)
   }
 
   return user!;

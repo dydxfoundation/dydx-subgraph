@@ -21,6 +21,8 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTokenTransfer
+        - event: DelegatedPowerChanged(indexed address,uint256,uint8)
+          handler: handleTokenDelegation
       file: ./src/token.ts
   - kind: ethereum/contract
     name: StakedToken
@@ -41,4 +43,6 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleStakedTokenTransfer
+        - event: DelegatedPowerChanged(indexed address,uint256,uint8)
+          handler: handleStakedTokenDelegation
       file: ./src/staked-token.ts
