@@ -2,4 +2,5 @@ type User @entity {
   id: ID!
   totalTokens: BigInt!
   totalStakedTokens: BigInt!
+  votingPower: BigInt!
 }

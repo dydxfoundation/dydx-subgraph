@@ -20,6 +20,6 @@ export function handleStakedTokenTransfer(event: Transfer): void {
 
   if (to.toHexString() != ADDRESS_ZERO) {
     // don't subtract from zero address on burns 
-    changeUserStakedTokenBalance(from, amount, false)
+    changeUserStakedTokenBalance(to, amount, true)
   }
 }
