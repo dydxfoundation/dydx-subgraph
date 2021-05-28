@@ -37,10 +37,8 @@ export function changeUserStakedTokenBalance(address: Address, amount: BigInt, a
 
   if (add) {
     user.totalStakedTokens = user.totalStakedTokens.plus(amount)
-    user.votingPower = user.votingPower.plus(amount)
   } else {
     user.totalStakedTokens = user.totalStakedTokens.minus(amount)
-    user.votingPower = user.votingPower.minus(amount)
   }
 
   user.save()
