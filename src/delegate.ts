@@ -2,19 +2,45 @@ import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { getUser } from "./helpers";
 import { User } from "../generated/schema"
 
-export function handleDelegation(userAddress: Address, amount: BigInt, delegationType: i32): void {
+export enum TokenType {
+  Token,
+  StakedToken,
+}
+
+export function handleDelegation(userAddress: Address, amount: BigInt, delegationType: i32, tokenType: TokenType): void {
   let user: User = getUser(userAddress)
 
+  let diff: BigInt;
   if (delegationType == 0) {
-    // Voting power
-    let votingPowerDiff: BigInt = amount.minus(user.delegatedVotingPower)
-    user.delegatedVotingPower = user.delegatedVotingPower.plus(votingPowerDiff)
-    user.votingPower = user.votingPower.plus(votingPowerDiff)
+    // Voting power was delegated
+    if (tokenType == TokenType.Token) {
+      diff = amount.minus(user.tokenVotingPower)
+      user.tokenVotingPower = amount
+    } else if (tokenType == TokenType.StakedToken) {
+      diff = amount.minus(user.stakedTokenVotingPower)
+      user.stakedTokenVotingPower = amount
+    } else {
+      // Unknown option
+      log.error("Unknown token type", [tokenType.toString()])
+      return
+    }
+    // votingPower is combination of both staked + regular token voting power
+    user.votingPower = user.votingPower.minus(diff)
   } else if (delegationType == 1) {
-    // Proposition power
-    let proposingPowerDiff: BigInt = amount.minus(user.delegatedProposingPower)
-    user.delegatedProposingPower = user.delegatedProposingPower.plus(proposingPowerDiff)
-    user.proposingPower = user.proposingPower.plus(proposingPowerDiff)
+    // Proposition power was delegated
+    if (tokenType == TokenType.Token) {
+      diff = amount.minus(user.tokenProposingPower)
+      user.tokenProposingPower = amount
+    } else if (tokenType == TokenType.StakedToken) {
+      diff = amount.minus(user.stakedTokenProposingPower)
+      user.stakedTokenProposingPower = amount
+    } else {
+      // Unknown option
+      log.error("Unknown token type", [tokenType.toString()])
+      return
+    }
+    // proposingPower is combination of both staked + regular token voting power
+    user.proposingPower = user.proposingPower.minus(diff)
   } else {
     // Unknown option
     log.error("Unknown delegation type", [delegationType.toString()])

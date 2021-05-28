@@ -3,7 +3,9 @@ type User @entity {
   totalTokens: BigInt!
   totalStakedTokens: BigInt!
   votingPower: BigInt!
-  delegatedVotingPower: BigInt!
   proposingPower: BigInt!
-  delegatedProposingPower: BigInt!
+  tokenVotingPower: BigInt!
+  tokenProposingPower: BigInt!
+  stakedTokenVotingPower: BigInt!
+  stakedTokenProposingPower: BigInt!
 }

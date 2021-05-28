@@ -4,7 +4,7 @@ import {
   DelegatedPowerChanged,
 } from "../generated/Token/Token"
 import { ADDRESS_ZERO, changeUserTokenBalance } from "./helpers";
-import { handleDelegation } from "./delegate";
+import { handleDelegation, TokenType } from "./delegate";
 
 export function handleTokenTransfer(event: Transfer): void {
   let from: Address = event.params.from;
@@ -24,5 +24,5 @@ export function handleTokenTransfer(event: Transfer): void {
 }
 
 export function handleTokenDelegation(event: DelegatedPowerChanged): void {
-  handleDelegation(event.params.user, event.params.amount, event.params.delegationType)
+  handleDelegation(event.params.user, event.params.amount, event.params.delegationType, TokenType.Token)
 }
