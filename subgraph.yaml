@@ -14,7 +14,7 @@ dataSources:
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Transfer
+        - User
       abis:
         - name: Token
           file: ./abi/contracts/governance/token/Token.sol/Token.json
@@ -36,7 +36,7 @@ dataSources:
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Transfer
+        - User
       abis:
         - name: StakedToken
           file: ./abi/contracts/staking/safety/StakedToken.sol/StakedToken.json
@@ -46,3 +46,26 @@ dataSources:
         - event: DelegatedPowerChanged(indexed address,uint256,uint8)
           handler: handleStakedTokenDelegation
       file: ./src/staked-token.ts
+  - kind: ethereum/contract
+    name: Governor
+    network: ropsten
+    source:
+      address: "0x8b6aFBd8c1AeBdb15dB6d92275F91e8e597dFCd1"
+      abi: Governor
+      startBlock: 10268886
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Proposal
+        - ProposalVote
+      abis:
+        - name: Governor
+          file: ./abi/contracts/governance/Governor.sol/Governor.json
+      eventHandlers:
+        - event: ProposalCreated(uint256,indexed address,indexed address,address[],uint256[],string[],bytes[],bool[],uint256,uint256,address,bytes32)
+          handler: handleProposalCreated
+        - event: VoteEmitted(uint256,indexed address,bool,uint256)
+          handler: handleVoteEmitted
+      file: ./src/proposal.ts

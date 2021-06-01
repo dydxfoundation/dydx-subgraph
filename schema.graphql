@@ -1,4 +1,5 @@
 type User @entity {
+  "ID attribute is user public key"
   id: ID!
   totalTokens: BigInt!
   totalStakedTokens: BigInt!
@@ -8,4 +9,18 @@ type User @entity {
   tokenProposingPower: BigInt!
   stakedTokenVotingPower: BigInt!
   stakedTokenProposingPower: BigInt!
+}
+
+type Proposal @entity {
+  "ID attribute is proposal ID"
+  id: ID!
+}
+
+type ProposalVote @entity {
+  "ID attribute is a function of user ID and proposal ID, e.g. {user.id}-{proposal.id}"
+  id: ID!
+  proposal: Proposal!
+  user: User!
+  support: Boolean!
+  votingPower: BigInt!
 }
