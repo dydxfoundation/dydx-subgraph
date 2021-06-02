@@ -24,21 +24,21 @@ export function getUser(address: Address): User {
 
 export function getProposal(proposalId: BigInt): Proposal {
   let proposal = Proposal.load(proposalId.toString())
-  if (proposal == null) {
+  if (!proposal) {
     proposal = new Proposal(proposalId.toString())
   }
 
-  return proposal as Proposal;
+  return proposal!;
 }
 
 export function getProposalVote(proposalId: BigInt, userAddress: Address): ProposalVote {
   let proposalVoteId: ProposalVoteId = getProposalVoteId(proposalId, userAddress)
   let proposalVote = ProposalVote.load(proposalVoteId)
-  if (proposalVote == null) {
+  if (!proposalVote) {
     proposalVote = new ProposalVote(proposalVoteId)
   }
 
-  return proposalVote as ProposalVote;
+  return proposalVote!;
 }
 
 function getProposalVoteId(proposalId: BigInt, userAddress: Address): ProposalVoteId {
