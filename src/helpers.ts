@@ -7,7 +7,6 @@ export function getUser(address: Address): User {
   let user = User.load(address.toHexString())
   if (!user) {
     user = new User(address.toHexString())
-    user.totalRewardsClaimed = BigInt.fromI32(0)
     user.totalTokens = BigInt.fromI32(0)
     user.totalStakedTokens = BigInt.fromI32(0)
     user.votingPower = BigInt.fromI32(0)
