@@ -3,26 +3,6 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: CumulativeMerkleDistributor
-    network: ropsten
-    source:
-      address: "0xbf37470d08DbAf6d71586274C81FEDC0297870e6"
-      abi: CumulativeMerkleDistributor
-      startBlock: 10179849
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - Claimed
-      abis:
-        - name: CumulativeMerkleDistributor
-          file: ./abi/contracts/cumulative-merkle-distributor/CumulativeMerkleDistributor.sol/CumulativeMerkleDistributor.json
-      eventHandlers:
-        - event: Claimed(uint256,address,uint256,uint256)
-          handler: handleClaimed
-      file: ./src/rewards.ts
-  - kind: ethereum/contract
     name: Token 
     network: ropsten
     source:
