@@ -22,3 +22,23 @@ dataSources:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTokenTransfer
       file: ./src/token.ts
+  - kind: ethereum/contract
+    name: StakedToken
+    network: ropsten
+    source:
+      address: "0xF839A67734F4F5Ee58B3308f19E2298E47cEBee2"
+      abi: StakedToken
+      startBlock: 10268886
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: StakedToken
+          file: ./abi/contracts/staking/safety/StakedToken.sol/StakedToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleStakedTokenTransfer
+      file: ./src/staked-token.ts
