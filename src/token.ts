@@ -1,8 +1,10 @@
 import { Address } from "@graphprotocol/graph-ts"
 import {
   Transfer,
+  DelegatedPowerChanged,
 } from "../generated/Token/Token"
 import { ADDRESS_ZERO, changeUserTokenBalance } from "./helpers";
+import { handleDelegation, TokenType } from "./delegate";
 
 export function handleTokenTransfer(event: Transfer): void {
   let from: Address = event.params.from;
@@ -19,4 +21,8 @@ export function handleTokenTransfer(event: Transfer): void {
   }
 
   changeUserTokenBalance(to, amount, true)
+}
+
+export function handleTokenDelegation(event: DelegatedPowerChanged): void {
+  handleDelegation(event.params.user, event.params.amount, event.params.delegationType, TokenType.Token)
 }

@@ -1,8 +1,10 @@
 import { Address } from "@graphprotocol/graph-ts"
 import {
   Transfer,
+  DelegatedPowerChanged,
 } from "../generated/StakedToken/StakedToken"
 import { ADDRESS_ZERO, changeUserStakedTokenBalance } from "./helpers";
+import { handleDelegation, TokenType } from "./delegate";
 
 export function handleStakedTokenTransfer(event: Transfer): void {
   let from: Address = event.params.from;
@@ -22,4 +24,8 @@ export function handleStakedTokenTransfer(event: Transfer): void {
     // don't subtract from zero address on burns 
     changeUserStakedTokenBalance(to, amount, true)
   }
+}
+
+export function handleStakedTokenDelegation(event: DelegatedPowerChanged): void {
+  handleDelegation(event.params.user, event.params.amount, event.params.delegationType, TokenType.StakedToken)
 }
