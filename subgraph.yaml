@@ -6,7 +6,7 @@ dataSources:
     name: Token 
     network: ropsten
     source:
-      address: "0x89EF1daFf7b1fADa010E07AAA994F54e4AeC3fF6"
+      address: "0x0c45c182B90Bc99bf78aeCc165685863399334e6"
       abi: Token
       startBlock: 10268886
     mapping:
@@ -28,7 +28,7 @@ dataSources:
     name: StakedToken
     network: ropsten
     source:
-      address: "0xF839A67734F4F5Ee58B3308f19E2298E47cEBee2"
+      address: "0xD635264eEe739df6e4200EA77d198CeDEf1369a2"
       abi: StakedToken
       startBlock: 10268886
     mapping:
@@ -50,7 +50,7 @@ dataSources:
     name: Governor
     network: ropsten
     source:
-      address: "0x8b6aFBd8c1AeBdb15dB6d92275F91e8e597dFCd1"
+      address: "0x6938240Ba19cB8a614444156244b658f650c8D5c"
       abi: Governor
       startBlock: 10268886
     mapping:
