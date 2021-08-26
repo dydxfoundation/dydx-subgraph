@@ -3,11 +3,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Token 
+    name: DydxToken 
     network: ropsten
     source:
-      address: "0x0c45c182B90Bc99bf78aeCc165685863399334e6"
-      abi: Token
+      address: "0x8efC3855dd783e8E0F664247De7357Aa9B3BCA86"
+      abi: DydxToken
       startBlock: 10268886
     mapping:
       kind: ethereum/events
@@ -16,8 +16,8 @@ dataSources:
       entities:
         - User
       abis:
-        - name: Token
-          file: ./abi/contracts/governance/token/Token.sol/Token.json
+        - name: DydxToken
+          file: ./abi/contracts/governance/token/DydxToken.sol/DydxToken.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTokenTransfer
@@ -25,11 +25,11 @@ dataSources:
           handler: handleTokenDelegation
       file: ./src/token.ts
   - kind: ethereum/contract
-    name: StakedToken
+    name: StakedDydxToken
     network: ropsten
     source:
-      address: "0xD635264eEe739df6e4200EA77d198CeDEf1369a2"
-      abi: StakedToken
+      address: "0xDc81Ed4A45f056A35630A9c56331BeE20e29BD59"
+      abi: StakedDydxToken
       startBlock: 10268886
     mapping:
       kind: ethereum/events
@@ -38,8 +38,8 @@ dataSources:
       entities:
         - User
       abis:
-        - name: StakedToken
-          file: ./abi/contracts/staking/safety/StakedToken.sol/StakedToken.json
+        - name: StakedDydxToken
+          file: ./abi/contracts/safety/v1/SafetyModuleV1.sol/SafetyModuleV1.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleStakedTokenTransfer
@@ -47,11 +47,11 @@ dataSources:
           handler: handleStakedTokenDelegation
       file: ./src/staked-token.ts
   - kind: ethereum/contract
-    name: Governor
+    name: DydxGovernor
     network: ropsten
     source:
-      address: "0x6938240Ba19cB8a614444156244b658f650c8D5c"
-      abi: Governor
+      address: "0x4AF20C63252276e41769c8cE6A3cEAA47ecb59C4"
+      abi: DydxGovernor
       startBlock: 10268886
     mapping:
       kind: ethereum/events
@@ -61,8 +61,8 @@ dataSources:
         - Proposal
         - ProposalVote
       abis:
-        - name: Governor
-          file: ./abi/contracts/governance/Governor.sol/Governor.json
+        - name: DydxGovernor
+          file: ./abi/contracts/governance/DydxGovernor.sol/DydxGovernor.json
       eventHandlers:
         - event: ProposalCreated(uint256,indexed address,indexed address,address[],uint256[],string[],bytes[],bool[],uint256,uint256,address,bytes32)
           handler: handleProposalCreated
