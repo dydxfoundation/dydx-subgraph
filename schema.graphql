@@ -25,7 +25,7 @@ type ProposalVote @entity {
   votingPower: BigInt!
 }
 
-type UserClaimedRewards @entity {
+type UserReward @entity {
   "ID attribute is a function of user ID and rewards claim number at the time of claiming, e.g. {user.id}-{incentivesModule}-{claimTimestamp}"
   id: ID!
   user: User!

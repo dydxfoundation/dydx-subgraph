@@ -1,12 +1,12 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { User, Proposal, ProposalVote, UserClaimedRewards } from '../generated/schema';
+import { User, Proposal, ProposalVote, UserReward } from '../generated/schema';
 import { IncentivesModule } from './rewards'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 type ProposalVoteId = string
 
-type UserClaimedRewardsId = string
+type UserRewardId = string
 
 export function getUser(address: Address): User {
   let user = User.load(address.toHexString())
@@ -48,29 +48,29 @@ function getProposalVoteId(proposalId: BigInt, userAddress: Address): ProposalVo
   return proposalId.toString() + "-" + userAddress.toHexString()
 }
 
-export function getUserClaimedRewards(
+export function getUserReward(
   userAddress: Address,
   incentivesModule: IncentivesModule,
   claimTimestamp: BigInt,
-): UserClaimedRewards {
-  let userClaimedRewardsId: UserClaimedRewardsId = getUserClaimedRewardsId(
+): UserReward {
+  let userRewardId: UserRewardId = getUserRewardId(
     userAddress,
     incentivesModule,
     claimTimestamp,
   )
-  let userClaimedRewards = UserClaimedRewards.load(userClaimedRewardsId)
-  if (!userClaimedRewards) {
-    userClaimedRewards = new UserClaimedRewards(userClaimedRewardsId)
+  let userReward = UserReward.load(userRewardId)
+  if (!userReward) {
+    userReward = new UserReward(userRewardId)
   }
 
-  return userClaimedRewards!;
+  return userReward!;
 }
 
-function getUserClaimedRewardsId(
+function getUserRewardId(
   userAddress: Address,
   incentivesModule: IncentivesModule,
   claimTimestamp: BigInt,
-): UserClaimedRewardsId {
+): UserRewardId {
   return userAddress.toHexString() + "-" + incentivesModule.toString() + "-" + claimTimestamp.toString()
 }
 
