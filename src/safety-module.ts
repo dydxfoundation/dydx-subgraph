@@ -6,7 +6,7 @@ import {
 } from "../generated/SafetyModule/SafetyModule"
 import { ADDRESS_ZERO, changeUserStakedTokenBalance } from "./helpers";
 import { handleDelegation, DYDXTokenType } from "./delegate";
-import { handleClaimRewards, IncentivesModule } from "./rewards";
+import { handleClaimRewards } from "./rewards";
 
 export function handleSafetyModuleTransfer(event: Transfer): void {
   let from: Address = event.params.from;
@@ -35,7 +35,7 @@ export function handleSafetyModuleDelegation(event: DelegatedPowerChanged): void
 export function handleSafetyModuleClaimRewards(event: ClaimedRewards): void {
   handleClaimRewards(
     event.params.recipient,
-    IncentivesModule.SafetyModule,
+    'SafetyModule',
     event.block.timestamp,
     event.params.claimedRewards,
   )

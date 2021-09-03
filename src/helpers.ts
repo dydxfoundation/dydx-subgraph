@@ -1,6 +1,5 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { User, Proposal, ProposalVote, UserReward } from '../generated/schema';
-import { IncentivesModule } from './rewards'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -50,7 +49,7 @@ function getProposalVoteId(proposalId: BigInt, userAddress: Address): ProposalVo
 
 export function getUserReward(
   userAddress: Address,
-  incentivesModule: IncentivesModule,
+  incentivesModule: String,
   claimTimestamp: BigInt,
 ): UserReward {
   let userRewardId: UserRewardId = getUserRewardId(
@@ -68,10 +67,10 @@ export function getUserReward(
 
 function getUserRewardId(
   userAddress: Address,
-  incentivesModule: IncentivesModule,
+  incentivesModule: String,
   claimTimestamp: BigInt,
 ): UserRewardId {
-  return userAddress.toHexString() + "-" + incentivesModule.toString() + "-" + claimTimestamp.toString()
+  return userAddress.toHexString() + "-" + incentivesModule + "-" + claimTimestamp.toString()
 }
 
 export function changeUserTokenBalance(address: Address, amount: BigInt, add: boolean): void {

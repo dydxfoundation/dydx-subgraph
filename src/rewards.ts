@@ -1,16 +1,10 @@
-import { Address, BigInt, log } from "@graphprotocol/graph-ts"
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { getUser, getUserReward } from "./helpers";
-import { User, UserReward } from "../generated/schema"
-
-export enum IncentivesModule {
-  MerkleDistributor,
-  SafetyModule,
-  LiquidityStaking,
-}
+import { UserReward } from "../generated/schema"
 
 export function handleClaimRewards(
   userAddress: Address,
-  incentivesModule: IncentivesModule,
+  incentivesModule: string,
   claimTimestamp: BigInt,
   rewards: BigInt,
 ): void {
@@ -21,7 +15,7 @@ export function handleClaimRewards(
   )
 
   UserReward.user = getUser(userAddress).id
-  UserReward.incentivesModule = incentivesModule.toString()
+  UserReward.incentivesModule = incentivesModule
   UserReward.claimTimestamp = claimTimestamp
   UserReward.rewards = rewards
 

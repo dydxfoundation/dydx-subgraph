@@ -1,10 +1,10 @@
 import { RewardsClaimed } from "../generated/MerkleDistributor/MerkleDistributor"
-import { handleClaimRewards, IncentivesModule } from "./rewards";
+import { handleClaimRewards } from "./rewards";
 
 export function handleMerkleDistributorClaimRewards(event: RewardsClaimed): void {
   handleClaimRewards(
     event.params.account,
-    IncentivesModule.MerkleDistributor,
+    'MerkleDistributor',
     event.block.timestamp,
     event.params.amount,
   )
