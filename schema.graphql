@@ -24,3 +24,18 @@ type ProposalVote @entity {
   support: Boolean!
   votingPower: BigInt!
 }
+
+type UserClaimedRewards @entity {
+  "ID attribute is a function of user ID and rewards claim number at the time of claiming, e.g. {user.id}-{incentivesModule}-{claimTimestamp}"
+  id: ID!
+  user: User!
+  incentivesModule: IncentivesModule!
+  claimTimestamp: BigInt!
+  rewards: BigInt!
+}
+
+enum IncentivesModule {
+  MerkleDistributor
+  SafetyModule
+  LiquidityStaking
+}

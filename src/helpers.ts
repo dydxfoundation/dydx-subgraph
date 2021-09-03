@@ -1,9 +1,12 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { User, Proposal, ProposalVote } from "../generated/schema"
+import { User, Proposal, ProposalVote, UserClaimedRewards } from '../generated/schema';
+import { IncentivesModule } from './rewards'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 type ProposalVoteId = string
+
+type UserClaimedRewardsId = string
 
 export function getUser(address: Address): User {
   let user = User.load(address.toHexString())
@@ -43,6 +46,32 @@ export function getProposalVote(proposalId: BigInt, userAddress: Address): Propo
 
 function getProposalVoteId(proposalId: BigInt, userAddress: Address): ProposalVoteId {
   return proposalId.toString() + "-" + userAddress.toHexString()
+}
+
+export function getUserClaimedRewards(
+  userAddress: Address,
+  incentivesModule: IncentivesModule,
+  claimTimestamp: BigInt,
+): UserClaimedRewards {
+  let userClaimedRewardsId: UserClaimedRewardsId = getUserClaimedRewardsId(
+    userAddress,
+    incentivesModule,
+    claimTimestamp,
+  )
+  let userClaimedRewards = UserClaimedRewards.load(userClaimedRewardsId)
+  if (!userClaimedRewards) {
+    userClaimedRewards = new UserClaimedRewards(userClaimedRewardsId)
+  }
+
+  return userClaimedRewards!;
+}
+
+function getUserClaimedRewardsId(
+  userAddress: Address,
+  incentivesModule: IncentivesModule,
+  claimTimestamp: BigInt,
+): UserClaimedRewardsId {
+  return userAddress.toHexString() + "-" + incentivesModule.toString() + "-" + claimTimestamp.toString()
 }
 
 export function changeUserTokenBalance(address: Address, amount: BigInt, add: boolean): void {

@@ -2,7 +2,7 @@ import { Address, BigInt, log } from "@graphprotocol/graph-ts"
 import { getUser } from "./helpers";
 import { User } from "../generated/schema"
 
-export enum TokenType {
+export enum DYDXTokenType {
   Token,
   StakedToken,
 }
@@ -12,16 +12,16 @@ enum DelegationType {
   PropositionPower = 1,
 }
 
-export function handleDelegation(userAddress: Address, amount: BigInt, delegationType: i32, tokenType: TokenType): void {
+export function handleDelegation(userAddress: Address, amount: BigInt, delegationType: i32, tokenType: DYDXTokenType): void {
   let user: User = getUser(userAddress)
 
   let diff: BigInt;
   if (delegationType == DelegationType.VotingPower) {
     // Voting power was delegated
-    if (tokenType == TokenType.Token) {
+    if (tokenType == DYDXTokenType.Token) {
       diff = amount.minus(user.tokenVotingPower)
       user.tokenVotingPower = amount
-    } else if (tokenType == TokenType.StakedToken) {
+    } else if (tokenType == DYDXTokenType.StakedToken) {
       diff = amount.minus(user.stakedTokenVotingPower)
       user.stakedTokenVotingPower = amount
     } else {
@@ -33,10 +33,10 @@ export function handleDelegation(userAddress: Address, amount: BigInt, delegatio
     user.votingPower = user.votingPower.plus(diff)
   } else if (delegationType == DelegationType.PropositionPower) {
     // Proposition power was delegated
-    if (tokenType == TokenType.Token) {
+    if (tokenType == DYDXTokenType.Token) {
       diff = amount.minus(user.tokenProposingPower)
       user.tokenProposingPower = amount
-    } else if (tokenType == TokenType.StakedToken) {
+    } else if (tokenType == DYDXTokenType.StakedToken) {
       diff = amount.minus(user.stakedTokenProposingPower)
       user.stakedTokenProposingPower = amount
     } else {

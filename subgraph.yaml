@@ -6,9 +6,9 @@ dataSources:
     name: DydxToken 
     network: ropsten
     source:
-      address: "0x8efC3855dd783e8E0F664247De7357Aa9B3BCA86"
+      address: "0x78b8ED55608F3db3f4e5A0A6f495f75cB8e0172F"
       abi: DydxToken
-      startBlock: 10268886
+      startBlock: 10950559
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -25,34 +25,12 @@ dataSources:
           handler: handleTokenDelegation
       file: ./src/token.ts
   - kind: ethereum/contract
-    name: StakedDydxToken
-    network: ropsten
-    source:
-      address: "0xDc81Ed4A45f056A35630A9c56331BeE20e29BD59"
-      abi: StakedDydxToken
-      startBlock: 10268886
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - User
-      abis:
-        - name: StakedDydxToken
-          file: ./abi/contracts/safety/v1/SafetyModuleV1.sol/SafetyModuleV1.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleStakedTokenTransfer
-        - event: DelegatedPowerChanged(indexed address,uint256,uint8)
-          handler: handleStakedTokenDelegation
-      file: ./src/staked-token.ts
-  - kind: ethereum/contract
     name: DydxGovernor
     network: ropsten
     source:
-      address: "0x4AF20C63252276e41769c8cE6A3cEAA47ecb59C4"
+      address: "0x5Fd2BfBba46f1EA4b5f7D468ddcd3Fa9Aca7Ce7F"
       abi: DydxGovernor
-      startBlock: 10268886
+      startBlock: 10950559
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -69,3 +47,67 @@ dataSources:
         - event: VoteEmitted(uint256,indexed address,bool,uint256)
           handler: handleVoteEmitted
       file: ./src/proposal.ts
+  - kind: ethereum/contract
+    name: SafetyModule
+    network: ropsten
+    source:
+      address: "0xb9B802E34e646D383b85D9B9ad1B2baDf807603E"
+      abi: SafetyModule
+      startBlock: 10950559
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - User
+      abis:
+        - name: SafetyModule
+          file: ./abi/contracts/safety/v1/SafetyModuleV1.sol/SafetyModuleV1.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleSafetyModuleTransfer
+        - event: DelegatedPowerChanged(indexed address,uint256,uint8)
+          handler: handleSafetyModuleDelegation
+        - event: ClaimedRewards(indexed address,address,uint256)
+          handler: handleSafetyModuleClaimRewards
+      file: ./src/safety-module.ts
+  - kind: ethereum/contract
+    name: MerkleDistributor 
+    network: ropsten
+    source:
+      address: "0x0968e47cBa485006d9CDC6a8eAa94eba779Ca309"
+      abi: MerkleDistributor
+      startBlock: 10950559
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - User
+      abis:
+        - name: MerkleDistributor
+          file: ./abi/contracts/merkle-distributor/v1/MerkleDistributorV1.sol/MerkleDistributorV1.json
+      eventHandlers:
+        - event: RewardsClaimed(address,uint256)
+          handler: handleMerkleDistributorClaimRewards
+      file: ./src/merkle-distributor.ts
+  - kind: ethereum/contract
+    name: LiquidityStaking
+    network: ropsten
+    source:
+      address: "0xf6c7cbb3381c819dD403a1b4B7669fE468cf738f"
+      abi: LiquidityStaking
+      startBlock: 10950559
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - User
+      abis:
+        - name: LiquidityStaking
+          file: ./abi/contracts/liquidity/v1/LiquidityStakingV1.sol/LiquidityStakingV1.json
+      eventHandlers:
+        - event: ClaimedRewards(indexed address,address,uint256)
+          handler: handleLiquidityStakingClaimedRewards
+      file: ./src/liquidity-staking.ts
