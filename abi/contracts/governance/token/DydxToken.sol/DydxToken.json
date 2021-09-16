@@ -13,7 +13,17 @@
       },
       {
         "internalType": "uint256",
+        "name": "transferRestrictionLiftedNoLaterThan",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
         "name": "mintingRestrictedBefore",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "mintMaxPercent",
         "type": "uint256"
       }
     ],
@@ -145,11 +155,17 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "transferHook",
+        "name": "account",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isAllowed",
+        "type": "bool"
       }
     ],
-    "name": "TransferHookUpdated",
+    "name": "TransferAllowlistUpdated",
     "type": "event"
   },
   {
@@ -157,18 +173,12 @@
     "inputs": [
       {
         "indexed": false,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "isWhitelisted",
-        "type": "bool"
+        "internalType": "uint256",
+        "name": "transfersRestrictedBefore",
+        "type": "uint256"
       }
     ],
-    "name": "TransferWhitelistUpdated",
+    "name": "TransfersRestrictedBeforeUpdated",
     "type": "event"
   },
   {
@@ -212,7 +222,20 @@
   },
   {
     "inputs": [],
-    "name": "EIP712_REVISION",
+    "name": "EIP712_DOMAIN",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "EIP712_VERSION",
     "outputs": [
       {
         "internalType": "bytes",
@@ -277,7 +300,7 @@
   },
   {
     "inputs": [],
-    "name": "TRANSFERS_RESTRICTED_BEFORE",
+    "name": "TRANSFER_RESTRICTION_LIFTED_NO_LATER_THAN",
     "outputs": [
       {
         "internalType": "uint256",
@@ -309,23 +332,10 @@
         "type": "address"
       }
     ],
-    "name": "_nonces",
+    "name": "_propositionPowerDelegates",
     "outputs": [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "_transferHook",
-    "outputs": [
-      {
-        "internalType": "contract ITransferHook",
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
@@ -339,14 +349,131 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
-    "name": "_transferTokensWhitelist",
+    "name": "_propositionPowerSnapshots",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "blockNumber",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "value",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "_propositionPowerSnapshotsCounts",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "_tokenTransferAllowlist",
     "outputs": [
       {
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "_totalSupplySnapshots",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "blockNumber",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "value",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_totalSupplySnapshotsCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "_transfersRestrictedBefore",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "_votingDelegates",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -408,7 +535,7 @@
         "type": "address[]"
       }
     ],
-    "name": "addToTransferTokensWhitelist",
+    "name": "addToTokenTransferAllowlist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -762,6 +889,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "nonces",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -825,7 +971,7 @@
         "type": "address[]"
       }
     ],
-    "name": "removeFromTransferTokensWhitelist",
+    "name": "removeFromTokenTransferAllowlist",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -932,12 +1078,12 @@
   {
     "inputs": [
       {
-        "internalType": "contract ITransferHook",
-        "name": "transferHook",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "transfersRestrictedBefore",
+        "type": "uint256"
       }
     ],
-    "name": "updateTransferHook",
+    "name": "updateTransfersRestrictedBefore",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
