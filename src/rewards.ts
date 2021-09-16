@@ -1,6 +1,6 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { getUser, getUserReward } from "./helpers";
-import { UserReward } from "../generated/schema"
+import { getUser, getRewardsClaimed } from "./helpers";
+import { RewardsClaimed } from "../generated/schema"
 
 export function handleClaimRewards(
   userAddress: Address,
@@ -8,16 +8,16 @@ export function handleClaimRewards(
   claimTimestamp: BigInt,
   rewards: BigInt,
 ): void {
-  let UserReward: UserReward = getUserReward(
+  let RewardsClaimed: RewardsClaimed = getRewardsClaimed(
     userAddress,
     incentivesModule,
     claimTimestamp,
   )
 
-  UserReward.user = getUser(userAddress).id
-  UserReward.incentivesModule = incentivesModule
-  UserReward.claimTimestamp = claimTimestamp
-  UserReward.rewards = rewards
+  RewardsClaimed.user = getUser(userAddress).id
+  RewardsClaimed.incentivesModule = incentivesModule
+  RewardsClaimed.claimTimestamp = claimTimestamp
+  RewardsClaimed.rewards = rewards
 
-  UserReward.save()
+  RewardsClaimed.save()
 }
