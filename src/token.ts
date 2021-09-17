@@ -2,7 +2,7 @@ import { Address } from "@graphprotocol/graph-ts"
 import {
   Transfer,
   DelegatedPowerChanged,
-} from "../generated/Token/Token"
+} from "../generated/DydxToken/DydxToken"
 import { ADDRESS_ZERO, changeUserTokenBalance } from "./helpers";
 import { handleDelegation, DYDXTokenType } from "./delegate";
 
