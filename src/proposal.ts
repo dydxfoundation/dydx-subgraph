@@ -3,7 +3,7 @@ import { getUser, getProposal, getProposalVote } from "./helpers";
 import {
   ProposalCreated,
   VoteEmitted,
-} from "../generated/Governor/Governor"
+} from "../generated/DydxGovernor/DydxGovernor"
 import { Proposal, ProposalVote } from "../generated/schema"
 
 export function handleProposalCreated(event: ProposalCreated): void {
