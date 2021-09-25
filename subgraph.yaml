@@ -11,7 +11,7 @@ dataSources:
       startBlock: 10950559
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - User
@@ -33,7 +33,7 @@ dataSources:
       startBlock: 10950559
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - Proposal
@@ -56,7 +56,7 @@ dataSources:
       startBlock: 10950559
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - User
@@ -80,7 +80,7 @@ dataSources:
       startBlock: 10950559
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - User
@@ -100,7 +100,7 @@ dataSources:
       startBlock: 10950559
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
         - User
