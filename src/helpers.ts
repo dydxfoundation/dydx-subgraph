@@ -21,7 +21,7 @@ export function getUser(address: Address): User {
     user.stakedTokenProposingPower = BigInt.fromI32(0)
   }
 
-  return user!;
+  return user;
 }
 
 export function getProposal(proposalId: BigInt): Proposal {
@@ -30,7 +30,7 @@ export function getProposal(proposalId: BigInt): Proposal {
     proposal = new Proposal(proposalId.toString())
   }
 
-  return proposal!;
+  return proposal;
 }
 
 export function getProposalVote(proposalId: BigInt, userAddress: Address): ProposalVote {
@@ -40,7 +40,7 @@ export function getProposalVote(proposalId: BigInt, userAddress: Address): Propo
     proposalVote = new ProposalVote(proposalVoteId)
   }
 
-  return proposalVote!;
+  return proposalVote;
 }
 
 function getProposalVoteId(proposalId: BigInt, userAddress: Address): ProposalVoteId {
@@ -62,7 +62,7 @@ export function getRewardsClaimed(
     userReward = new RewardsClaimed(userRewardId)
   }
 
-  return userReward!;
+  return userReward;
 }
 
 function getRewardsClaimedId(
