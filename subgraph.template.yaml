@@ -4,7 +4,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: DydxToken
-    network: ropsten
+    network: {{network}}
     source:
       address: "{{dydxTokenAddress}}"
       abi: DydxToken
@@ -26,7 +26,7 @@ dataSources:
       file: ./src/token.ts
   - kind: ethereum/contract
     name: DydxGovernor
-    network: ropsten
+    network: {{network}}
     source:
       address: "{{dydxGovernorAddress}}"
       abi: DydxGovernor
@@ -49,7 +49,7 @@ dataSources:
       file: ./src/proposal.ts
   - kind: ethereum/contract
     name: SafetyModule
-    network: ropsten
+    network: {{network}}
     source:
       address: "{{safetyModuleAddress}}"
       abi: SafetyModule
@@ -73,7 +73,7 @@ dataSources:
       file: ./src/safety-module.ts
   - kind: ethereum/contract
     name: MerkleDistributor
-    network: ropsten
+    network: {{network}}
     source:
       address: "{{merkleDistributorAddress}}"
       abi: MerkleDistributor
@@ -93,7 +93,7 @@ dataSources:
       file: ./src/merkle-distributor.ts
   - kind: ethereum/contract
     name: LiquidityStaking
-    network: ropsten
+    network: {{network}}
     source:
       address: "{{liquidityStakingAddress}}"
       abi: LiquidityStaking

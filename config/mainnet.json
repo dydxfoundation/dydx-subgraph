@@ -1,4 +1,5 @@
 {
+  "network": "mainnet",
   "startBlock": 12809555,
   "dydxTokenAddress": "0x92D6C1e31e14520e676a687F0a93788B716BEff5",
   "dydxGovernorAddress": "0x7E9B1672616FF6D6629Ef2879419aaE79A9018D2",
