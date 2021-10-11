@@ -4,13 +4,17 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dydxfoundation/dydx-ropsten",
+    "prepare:ropsten": "mustache config/ropsten.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
+    "deploy:ropsten": "prepare:ropsten && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dydxfoundation/dydx-ropsten",
+    "deploy:mainnet": "prepare:mainnet && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dydxfoundation/dydx",
     "create-local": "graph create --node http://localhost:8020/ fraypoint/merkle",
     "remove-local": "graph remove --node http://localhost:8020/ fraypoint/merkle",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 fraypoint/merkle"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.22.1",
-    "@graphprotocol/graph-ts": "0.22.0"
+    "@graphprotocol/graph-ts": "0.22.0",
+    "mustache": "^4.2.0"
   }
 }
