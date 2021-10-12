@@ -1,0 +1,9 @@
+{
+  "network": "ropsten",
+  "startBlock": 10950559,
+  "dydxTokenAddress": "0x78b8ED55608F3db3f4e5A0A6f495f75cB8e0172F",
+  "dydxGovernorAddress": "0x5Fd2BfBba46f1EA4b5f7D468ddcd3Fa9Aca7Ce7F",
+  "safetyModuleAddress": "0xb9B802E34e646D383b85D9B9ad1B2baDf807603E",
+  "merkleDistributorAddress": "0x0968e47cBa485006d9CDC6a8eAa94eba779Ca309",
+  "liquidityStakingAddress": "0xf6c7cbb3381c819dD403a1b4B7669fE468cf738f"
+}
