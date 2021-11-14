@@ -1,6 +1,7 @@
 {
   "network": "ropsten",
   "startBlock": 10950559,
+  "dydxPerpetualAddres": "0xD54f502e184B6B739d7D27a6410a67dc462D69c8",
   "dydxTokenAddress": "0x78b8ED55608F3db3f4e5A0A6f495f75cB8e0172F",
   "dydxGovernorAddress": "0x5Fd2BfBba46f1EA4b5f7D468ddcd3Fa9Aca7Ce7F",
   "safetyModuleAddress": "0xb9B802E34e646D383b85D9B9ad1B2baDf807603E",
