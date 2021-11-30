@@ -17,9 +17,9 @@ dataSources:
         - User
       abis:
         - name: DydxPerpetual
-          file: .abi/contracts/perpetual/DydxPerpetual.sol/DydxPerpetual.json
+          file: ./abi/contracts/perpetual/DydxPerpetual.sol/DydxPerpetual.json
       eventHandlers:
-        - event: LogDeposit(indexed address,indexed address,uint256)
+        - event: LogDeposit(address,uint256,uint256,uint256,uint256,uint256)
           handler: handleDeposit
       file: ./src/perpetual.ts
   - kind: ethereum/contract
