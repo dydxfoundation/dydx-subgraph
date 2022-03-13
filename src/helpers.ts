@@ -1,7 +1,17 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { User, Proposal, ProposalVote, RewardsClaimed } from '../generated/schema';
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import {
+  CommunityTreasuryTransaction,
+  User,
+  Proposal,
+  ProposalVote,
+  RewardsClaimed,
+} from '../generated/schema';
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
+
+// Address on mainnet for dYdX community treasury, which doesn't have an equivalent on other networks.
+export const COMMUNITY_TREASURY_CONTRACT_ADDRESS =
+         '0xe710ced57456d3a16152c32835b5fb4e72d9ea5b';
 
 type ProposalVoteId = string
 
@@ -95,4 +105,27 @@ export function changeUserStakedTokenBalance(address: Address, amount: BigInt, a
   }
 
   user.save()
+}
+
+export function saveCommunityTreasuryTransaction(
+         to: Address,
+         amount: BigInt,
+         txHash: Bytes,
+         timestamp: BigInt,
+         blockNumber: BigInt,
+         blockHash: Bytes
+       ): void {
+  const txHashString = txHash.toHexString();
+  let tx: CommunityTreasuryTransaction | null =
+    CommunityTreasuryTransaction.load(txHashString)
+  if (!tx) {
+    tx = new CommunityTreasuryTransaction(txHashString)
+  }
+  tx.to = to.toHexString();
+  tx.amount = amount;
+  tx.timestamp = timestamp;
+  tx.blockNumber = blockNumber;
+  tx.blockHash = blockHash;
+
+  tx.save();
 }

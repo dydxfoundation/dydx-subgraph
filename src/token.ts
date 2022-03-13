@@ -3,7 +3,12 @@ import {
   Transfer,
   DelegatedPowerChanged,
 } from "../generated/DydxToken/DydxToken"
-import { ADDRESS_ZERO, changeUserTokenBalance } from "./helpers";
+import {
+  ADDRESS_ZERO,
+  COMMUNITY_TREASURY_CONTRACT_ADDRESS,
+  changeUserTokenBalance,
+  saveCommunityTreasuryTransaction,
+} from './helpers';
 import { handleDelegation, DYDXTokenType } from "./delegate";
 
 export function handleTokenTransfer(event: Transfer): void {
@@ -21,6 +26,17 @@ export function handleTokenTransfer(event: Transfer): void {
   }
 
   changeUserTokenBalance(to, amount, true)
+
+  if (from == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS)) {
+    saveCommunityTreasuryTransaction(
+      to,
+      amount,
+      event.transaction.hash,
+      event.block.timestamp,
+      event.block.number,
+      event.block.hash
+    );
+  }
 }
 
 export function handleTokenDelegation(event: DelegatedPowerChanged): void {

@@ -39,3 +39,15 @@ enum IncentivesModule {
   SafetyModule
   LiquidityStaking
 }
+
+type CommunityTreasuryTransaction @entity {
+  "ID attribute is the transaction hash"
+  id: ID!
+  "User receiving the transaction"
+  to: User!
+  "DYDX token amount"
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockHash: Bytes!
+}
