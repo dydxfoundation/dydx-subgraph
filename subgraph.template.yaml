@@ -3,6 +3,26 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
+    name: DydxPerpetual
+    network: {{network}}
+    source:
+      address: "{{dydxPerpetualAddress}}"
+      abi: DydxPerpetual
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - User
+      abis:
+        - name: DydxPerpetual
+          file: ./abi/contracts/perpetual/DydxPerpetual.sol/DydxPerpetual.json
+      eventHandlers:
+        - event: LogDeposit(address,uint256,uint256,uint256,uint256,uint256)
+          handler: handleDeposit
+      file: ./src/perpetual.ts
+  - kind: ethereum/contract
     name: DydxToken
     network: {{network}}
     source:

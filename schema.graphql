@@ -9,6 +9,7 @@ type User @entity {
   tokenProposingPower: BigInt!
   stakedTokenVotingPower: BigInt!
   stakedTokenProposingPower: BigInt!
+  depositToPerpetual: BigInt!
 }
 
 type Proposal @entity {
