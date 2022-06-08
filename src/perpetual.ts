@@ -9,7 +9,6 @@ export function handleDeposit(event: LogDeposit): void {
     let depositAmount: BigInt = event.params.quantizedAmount
     let user: User = getUser(userAddress)
     user.depositToPerpetual = depositAmount
+
     user.save()
 }
-
-
