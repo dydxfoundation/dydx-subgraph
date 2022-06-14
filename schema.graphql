@@ -51,3 +51,12 @@ type CommunityTreasuryTransaction @entity {
   blockNumber: BigInt!
   blockHash: Bytes!
 }
+
+type HourlydYdXTokenExchangeRate @entity {
+  "ID attribute of the exchange rate entry {timestamp_hour_zero}"
+  id: ID!
+  "DYDX/USDC exchange rate"
+  exchangeRateUSDC: BigDecimal!
+  timestamp: Int!
+  blockNumber: Int!
+}
