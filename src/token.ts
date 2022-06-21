@@ -8,6 +8,10 @@ import {
   COMMUNITY_TREASURY_CONTRACT_ADDRESS,
   changeUserTokenBalance,
   saveCommunityTreasuryTransaction,
+  COMMUNITY_TREASURY_2_CONTRACT_ADDRESS,
+  GRANTS_TREASURY_CONTRACT_ADDRESS,
+  saveGrantsProgramTreasuryTransaction,
+  saveBalances
 } from './helpers';
 import { handleDelegation, DYDXTokenType } from "./delegate";
 import { BIGINT_ZERO } from "./common/constants";
@@ -17,27 +21,46 @@ import { updateHourlydYdXTokenExchangeRate } from "./common/timeseries";
 export function handleTokenTransfer(event: Transfer): void {
   let from: Address = event.params.from;
   let to: Address = event.params.to;
+
   if (from == to) {
     // ignore self-transfers
-    return
+    return;
   }
 
-  let amount = event.params.value;
+  const amount = event.params.value;
+
   if (from.toHexString() != ADDRESS_ZERO) {
     // don't subtract from zero address on mints
-    changeUserTokenBalance(from, amount, false)
+    changeUserTokenBalance(from, amount, false);
   }
 
-  changeUserTokenBalance(to, amount, true)
+  changeUserTokenBalance(to, amount, true);
+  saveBalances(to, from, amount, event.transaction.hash);
 
-  if (from == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS)) {
+  if (from == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS) 
+    || from == Address.fromString(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS)) {
     saveCommunityTreasuryTransaction(
       to,
+      from,
       amount,
       event.transaction.hash,
       event.block.timestamp,
       event.block.number,
-      event.block.hash
+      event.block.hash,
+      event.transaction.hash
+    );
+  }
+
+  if (from == Address.fromString(GRANTS_TREASURY_CONTRACT_ADDRESS)) {
+    saveGrantsProgramTreasuryTransaction(
+      to,
+      from,
+      amount,
+      event.transaction.hash,
+      event.block.timestamp,
+      event.block.number,
+      event.block.hash,
+      event.transaction.hash
     );
   }
 }

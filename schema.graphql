@@ -40,18 +40,6 @@ enum IncentivesModule {
   LiquidityStaking
 }
 
-type CommunityTreasuryTransaction @entity {
-  "ID attribute is the transaction hash"
-  id: ID!
-  "User receiving the transaction"
-  to: User!
-  "DYDX token amount"
-  amount: BigInt!
-  timestamp: BigInt!
-  blockNumber: BigInt!
-  blockHash: Bytes!
-}
-
 type HourlydYdXTokenExchangeRate @entity {
   "ID attribute of the exchange rate entry {timestamp_hour_zero}"
   id: ID!
@@ -59,4 +47,60 @@ type HourlydYdXTokenExchangeRate @entity {
   exchangeRateUSDC: BigDecimal!
   timestamp: Int!
   blockNumber: Int!
+}
+
+interface TreasuryTransaction {
+  id: ID!
+  to: User!
+  from: User!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockHash: Bytes!
+  transactionHash: Bytes!
+}
+
+type CommunityTreasuryTransaction implements TreasuryTransaction @entity {
+  id: ID!
+  to: User!
+  from: User!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockHash: Bytes!
+  transactionHash: Bytes!
+}
+
+type GrantsProgramTreasuryTransaction implements TreasuryTransaction @entity {
+  id: ID!
+  to: User!
+  from: User!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  blockHash: Bytes!
+  transactionHash: Bytes!
+}
+
+type CurrentDYDXPrice @entity {
+  "hardcoded to dydx"
+  id: ID!
+  value: BigDecimal!
+}
+
+type CommunityTreasuryHistoricalBalance @entity {
+  id: ID!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  balance: BigInt!
+}
+
+type GrantsProgramTreasuryHistoricalBalance @entity {
+  id: ID!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  balance: BigInt!
 }

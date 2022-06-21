@@ -1,24 +1,32 @@
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import {
   CommunityTreasuryTransaction,
   User,
   Proposal,
   ProposalVote,
   RewardsClaimed,
+  GrantsProgramTreasuryTransaction,
+  CommunityTreasuryHistoricalBalance,
+  GrantsProgramTreasuryHistoricalBalance,
+  CurrentDYDXPrice
 } from '../generated/schema';
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 // Address on mainnet for dYdX community treasury, which doesn't have an equivalent on other networks.
-export const COMMUNITY_TREASURY_CONTRACT_ADDRESS =
-         '0xe710ced57456d3a16152c32835b5fb4e72d9ea5b';
+export const COMMUNITY_TREASURY_CONTRACT_ADDRESS = '0xe710ced57456d3a16152c32835b5fb4e72d9ea5b';
+export const COMMUNITY_TREASURY_2_CONTRACT_ADDRESS = '0x08a90fe0741b7def03fb290cc7b273f1855767d8';
+export const GRANTS_TREASURY_CONTRACT_ADDRESS = '0xe710ced57456d3a16152c32835b5fb4e72d9ea5b';
+
+export const HARDCODED_ID = 'dydx';
 
 type ProposalVoteId = string
 
 type RewardsClaimedId = string
 
 export function getUser(address: Address): User {
-  let user = User.load(address.toHexString())
+  let user = User.load(address.toHexString());
+
   if (!user) {
     user = new User(address.toHexString())
     user.totalTokens = BigInt.fromI32(0)
@@ -109,23 +117,111 @@ export function changeUserStakedTokenBalance(address: Address, amount: BigInt, a
 
 export function saveCommunityTreasuryTransaction(
          to: Address,
+         from: Address,
          amount: BigInt,
          txHash: Bytes,
          timestamp: BigInt,
          blockNumber: BigInt,
-         blockHash: Bytes
+         blockHash: Bytes,
+         transactionHash: Bytes
        ): void {
   const txHashString = txHash.toHexString();
+
   let tx: CommunityTreasuryTransaction | null =
     CommunityTreasuryTransaction.load(txHashString)
+
   if (!tx) {
     tx = new CommunityTreasuryTransaction(txHashString)
   }
+
+  const dydxPriceUsd = getCurrentDYDXPrice();
+
   tx.to = to.toHexString();
+  tx.from = from.toHexString();
   tx.amount = amount;
+  tx.amountUSD = amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'));
   tx.timestamp = timestamp;
   tx.blockNumber = blockNumber;
   tx.blockHash = blockHash;
+  tx.transactionHash = transactionHash;
 
   tx.save();
+}
+
+export function saveGrantsProgramTreasuryTransaction(
+  to: Address,
+  from: Address,
+  amount: BigInt,
+  txHash: Bytes,
+  timestamp: BigInt,
+  blockNumber: BigInt,
+  blockHash: Bytes,
+  transactionHash: Bytes
+): void {
+  const txHashString = txHash.toHexString();
+
+  let tx: GrantsProgramTreasuryTransaction | null =
+    GrantsProgramTreasuryTransaction.load(txHashString)
+
+  if (!tx) {
+    tx = new GrantsProgramTreasuryTransaction(txHashString)
+  }
+
+  const dydxPriceUsd = getCurrentDYDXPrice();
+
+  tx.to = to.toHexString();
+  tx.from = from.toHexString();
+  tx.amount = amount;
+  tx.amountUSD = amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'));
+  tx.timestamp = timestamp;
+  tx.blockNumber = blockNumber;
+  tx.blockHash = blockHash;
+  tx.transactionHash = transactionHash;
+
+  tx.save();
+}
+
+export function saveBalances(to: Address, from: Address, amount: BigInt, transactionHash: Bytes): void {
+  const id = transactionHash.toString();
+  let communityTreasuryHistoricalBalance = CommunityTreasuryHistoricalBalance.load(id);
+  let grantsProgramTreasuryHistoricalBalance = GrantsProgramTreasuryHistoricalBalance.load(id);
+
+  if (!communityTreasuryHistoricalBalance) {
+    communityTreasuryHistoricalBalance = new CommunityTreasuryHistoricalBalance(id);
+  }
+
+  if (!grantsProgramTreasuryHistoricalBalance) {
+    grantsProgramTreasuryHistoricalBalance = new GrantsProgramTreasuryHistoricalBalance(id);
+  }
+
+  if (to == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS)
+       || to == Address.fromString(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS)) {
+    communityTreasuryHistoricalBalance.balance = communityTreasuryHistoricalBalance.balance.plus(amount);
+  }
+
+  if (to == Address.fromString(GRANTS_TREASURY_CONTRACT_ADDRESS)) {
+    grantsProgramTreasuryHistoricalBalance.balance = grantsProgramTreasuryHistoricalBalance.balance.plus(amount);
+  }
+
+  if (from == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS)
+       || from == Address.fromString(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS)) {
+    communityTreasuryHistoricalBalance.balance = communityTreasuryHistoricalBalance.balance.minus(amount);
+  }
+
+  if (from == Address.fromString(GRANTS_TREASURY_CONTRACT_ADDRESS)) {
+    grantsProgramTreasuryHistoricalBalance.balance = grantsProgramTreasuryHistoricalBalance.balance.minus(amount);
+  }
+
+  communityTreasuryHistoricalBalance.save();
+  grantsProgramTreasuryHistoricalBalance.save();
+}
+
+function getCurrentDYDXPrice(): BigDecimal {
+  const price = CurrentDYDXPrice.load(HARDCODED_ID);
+
+  if (!price) {
+    return BigDecimal.fromString('0');
+  }
+
+  return price.value;
 }
