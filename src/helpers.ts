@@ -181,17 +181,19 @@ export function saveGrantsProgramTreasuryTransaction(
   tx.save();
 }
 
-export function saveBalances(to: Address, from: Address, amount: BigInt, transactionHash: Bytes): void {
+export function saveBalances(to: Address, from: Address, amount: BigInt, transactionHash: Bytes, timestamp: BigInt): void {
   const id = transactionHash.toString();
   let communityTreasuryHistoricalBalance = CommunityTreasuryHistoricalBalance.load(id);
   let grantsProgramTreasuryHistoricalBalance = GrantsProgramTreasuryHistoricalBalance.load(id);
 
   if (!communityTreasuryHistoricalBalance) {
     communityTreasuryHistoricalBalance = new CommunityTreasuryHistoricalBalance(id);
+    communityTreasuryHistoricalBalance.balance = BigInt.fromI32(0);
   }
 
   if (!grantsProgramTreasuryHistoricalBalance) {
     grantsProgramTreasuryHistoricalBalance = new GrantsProgramTreasuryHistoricalBalance(id);
+    grantsProgramTreasuryHistoricalBalance.balance = BigInt.fromI32(0);
   }
 
   if (to == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS)
@@ -211,6 +213,12 @@ export function saveBalances(to: Address, from: Address, amount: BigInt, transac
   if (from == Address.fromString(GRANTS_TREASURY_CONTRACT_ADDRESS)) {
     grantsProgramTreasuryHistoricalBalance.balance = grantsProgramTreasuryHistoricalBalance.balance.minus(amount);
   }
+
+  communityTreasuryHistoricalBalance.timestamp = timestamp;
+  communityTreasuryHistoricalBalance.transactionHash = transactionHash;
+
+  grantsProgramTreasuryHistoricalBalance.timestamp = timestamp;
+  grantsProgramTreasuryHistoricalBalance.transactionHash = transactionHash;
 
   communityTreasuryHistoricalBalance.save();
   grantsProgramTreasuryHistoricalBalance.save();

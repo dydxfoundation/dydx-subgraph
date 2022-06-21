@@ -35,7 +35,7 @@ export function handleTokenTransfer(event: Transfer): void {
   }
 
   changeUserTokenBalance(to, amount, true);
-  saveBalances(to, from, amount, event.transaction.hash);
+  saveBalances(to, from, amount, event.transaction.hash, event.block.timestamp);
 
   if (from == Address.fromString(COMMUNITY_TREASURY_CONTRACT_ADDRESS) 
     || from == Address.fromString(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS)) {
