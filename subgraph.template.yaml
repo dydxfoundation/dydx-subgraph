@@ -18,6 +18,10 @@ dataSources:
       abis:
         - name: DydxToken
           file: ./abi/contracts/governance/token/DydxToken.sol/DydxToken.json
+        - name: UniswapV3Pool
+          file: ./abi/contracts/uniswap/UniswapV3Pool.json
+      blockHandlers:
+        - handler: handleBlockUpdates
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTokenTransfer
