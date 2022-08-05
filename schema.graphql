@@ -91,16 +91,38 @@ type CurrentDYDXPrice @entity {
   value: BigDecimal!
 }
 
+type Balance @entity {
+  "contract address"
+  id: ID!
+  dydxBalance: BigInt!
+}
+
+type HistoricalBalance @entity {
+  "{contract address}-{tx hash}"
+  id: ID!
+  contract: Bytes!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  dydxBalance: BigInt!
+}
+
 type CommunityTreasuryHistoricalBalance @entity {
   id: ID!
   timestamp: BigInt!
   transactionHash: Bytes!
-  balance: BigInt!
+  dydxBalance: BigInt!
 }
 
 type GrantsProgramTreasuryHistoricalBalance @entity {
   id: ID!
   timestamp: BigInt!
   transactionHash: Bytes!
-  balance: BigInt!
+  dydxBalance: BigInt!
+}
+
+type TotalTreasuryHistoricalBalance @entity {
+  id: ID!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  dydxBalance: BigInt!
 }
