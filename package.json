@@ -6,8 +6,8 @@
     "build": "graph build",
     "prepare:ropsten": "mustache config/ropsten.json subgraph.template.yaml > subgraph.yaml",
     "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
-    "deploy:ropsten": "yarn prepare:ropsten && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dydxfoundation/dydx-ropsten",
-    "deploy:mainnet": "yarn prepare:mainnet && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dydxfoundation/dydx",
+    "deploy:ropsten": "yarn prepare:ropsten && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shippooordao/dydx-treasury-ropsten",
+    "deploy:mainnet": "yarn prepare:mainnet && graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ shippooordao/dydx-treasury",
     "create-local": "graph create --node http://localhost:8020/ fraypoint/merkle",
     "remove-local": "graph remove --node http://localhost:8020/ fraypoint/merkle",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 fraypoint/merkle"

@@ -6,12 +6,9 @@ import {
   ProposalVote,
   RewardsClaimed,
   GrantsProgramTreasuryTransaction,
-  CommunityTreasuryHistoricalBalance,
-  GrantsProgramTreasuryHistoricalBalance,
   CurrentDYDXPrice,
   Balance,
-  HistoricalBalance,
-  TotalTreasuryHistoricalBalance
+  HistoricalBalance
 } from '../generated/schema';
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
@@ -126,9 +123,10 @@ export function saveCommunityTreasuryTransaction(
   timestamp: BigInt,
   blockNumber: BigInt,
   blockHash: Bytes,
-  transactionHash: Bytes
+  transactionHash: Bytes,
+  symbol: string
 ): void {
-  const id = `community-${txHash.toHexString()}`;
+  const id = `community-${symbol}-${txHash.toHexString()}`;
 
   let tx: CommunityTreasuryTransaction | null =
     CommunityTreasuryTransaction.load(id)
@@ -138,15 +136,19 @@ export function saveCommunityTreasuryTransaction(
   }
 
   const dydxPriceUsd = getCurrentDYDXPrice();
+  const amountUSD = symbol == 'dydx'
+    ? amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'))
+    : amount.toBigDecimal().div(BigDecimal.fromString('1e18'));
 
   tx.to = to;
   tx.from = from;
   tx.amount = amount;
-  tx.amountUSD = amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'));
+  tx.amountUSD = amountUSD;
   tx.timestamp = timestamp;
   tx.blockNumber = blockNumber;
   tx.blockHash = blockHash;
   tx.transactionHash = transactionHash;
+  tx.currencySymbol = symbol;
 
   tx.save();
 }
@@ -159,9 +161,10 @@ export function saveGrantsProgramTreasuryTransaction(
   timestamp: BigInt,
   blockNumber: BigInt,
   blockHash: Bytes,
-  transactionHash: Bytes
+  transactionHash: Bytes,
+  symbol: string
 ): void {
-  const id = `grants-${txHash.toHexString()}`;
+  const id = `grants-${symbol}-${txHash.toHexString()}`;
   
   let tx: GrantsProgramTreasuryTransaction | null =
     GrantsProgramTreasuryTransaction.load(id)
@@ -171,20 +174,24 @@ export function saveGrantsProgramTreasuryTransaction(
   }
 
   const dydxPriceUsd = getCurrentDYDXPrice();
+  const amountUSD = symbol == 'dydx'
+    ? amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'))
+    : amount.toBigDecimal().div(BigDecimal.fromString('1e18'));
 
   tx.to = to;
   tx.from = from;
   tx.amount = amount;
-  tx.amountUSD = amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'));
+  tx.amountUSD = amountUSD;
   tx.timestamp = timestamp;
   tx.blockNumber = blockNumber;
   tx.blockHash = blockHash;
   tx.transactionHash = transactionHash;
+  tx.currencySymbol = symbol;
 
   tx.save();
 }
 
-export function saveBalances(to: Address, from: Address, amount: BigInt, transactionHash: Bytes, timestamp: BigInt): void {
+export function saveDydxBalances(to: Address, from: Address, amount: BigInt, transactionHash: Bytes, timestamp: BigInt): void {
   if (!(
       to.equals(COMMUNITY_TREASURY_CONTRACT_ADDRESS) ||
       to.equals(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS) ||
@@ -200,11 +207,13 @@ export function saveBalances(to: Address, from: Address, amount: BigInt, transac
   if (!fromBalance) {
     fromBalance = new Balance(from.toHexString());
     fromBalance.dydxBalance = new BigInt(0);
+    fromBalance.usdcBalance = new BigInt(0);
   }
   let toBalance = Balance.load(to.toHexString());
   if (!toBalance) {
     toBalance = new Balance(to.toHexString());
     toBalance.dydxBalance = new BigInt(0);
+    toBalance.usdcBalance = new BigInt(0);
   }
 
   fromBalance.dydxBalance = fromBalance.dydxBalance.minus(amount);
@@ -222,6 +231,7 @@ export function saveBalances(to: Address, from: Address, amount: BigInt, transac
   }
   fromHistoricalBalance.timestamp = timestamp;
   fromHistoricalBalance.dydxBalance = fromBalance.dydxBalance;
+  fromHistoricalBalance.usdcBalance = fromBalance.usdcBalance;
   fromHistoricalBalance.transactionHash = transactionHash;
   fromHistoricalBalance.contract = from;
   fromHistoricalBalance.save();
@@ -235,6 +245,68 @@ export function saveBalances(to: Address, from: Address, amount: BigInt, transac
     );
   }
   toHistoricalBalance.timestamp = timestamp;
+  toHistoricalBalance.dydxBalance = toBalance.dydxBalance;
+  toHistoricalBalance.usdcBalance = toBalance.usdcBalance;
+  toHistoricalBalance.transactionHash = transactionHash;
+  toHistoricalBalance.contract = to;
+  toHistoricalBalance.save();
+}
+
+export function saveUsdcBalances(to: Address, from: Address, amount: BigInt, transactionHash: Bytes, timestamp: BigInt): void {
+  if (!(
+      to.equals(COMMUNITY_TREASURY_CONTRACT_ADDRESS) ||
+      to.equals(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS) ||
+      from.equals(COMMUNITY_TREASURY_CONTRACT_ADDRESS) ||
+      from.equals(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS) ||
+      to.equals(GRANTS_TREASURY_CONTRACT_ADDRESS) ||
+      from.equals(GRANTS_TREASURY_CONTRACT_ADDRESS)
+  )) {
+    return;
+  }
+  const txHash = transactionHash.toHexString();
+  let fromBalance = Balance.load(from.toHexString());
+  if (!fromBalance) {
+    fromBalance = new Balance(from.toHexString());
+    fromBalance.usdcBalance = new BigInt(0);
+    fromBalance.dydxBalance = new BigInt(0);
+  }
+  let toBalance = Balance.load(to.toHexString());
+  if (!toBalance) {
+    toBalance = new Balance(to.toHexString());
+    toBalance.usdcBalance = new BigInt(0);
+    toBalance.dydxBalance = new BigInt(0);
+  }
+
+  fromBalance.usdcBalance = fromBalance.usdcBalance.minus(amount);
+  toBalance.usdcBalance = toBalance.usdcBalance.plus(amount);
+  fromBalance.save();
+  toBalance.save();
+
+  let fromHistoricalBalance = HistoricalBalance.load(
+    `${from.toHexString()}-${txHash}`
+  );
+  if (!fromHistoricalBalance) {
+    fromHistoricalBalance = new HistoricalBalance(
+      `${from.toHexString()}-${txHash}`
+    );
+  }
+  fromHistoricalBalance.timestamp = timestamp;
+  fromHistoricalBalance.usdcBalance = fromBalance.usdcBalance;
+  fromHistoricalBalance.dydxBalance = fromBalance.dydxBalance;
+  fromHistoricalBalance.transactionHash = transactionHash;
+  fromHistoricalBalance.contract = from;
+  fromHistoricalBalance.save();
+  
+  let toHistoricalBalance = HistoricalBalance.load(
+    `${to.toHexString()}-${txHash}`
+  );
+  if (!toHistoricalBalance) {
+    toHistoricalBalance = new HistoricalBalance(
+      `${to.toHexString()}-${txHash}`
+    );
+  }
+  toHistoricalBalance.timestamp = timestamp;
+  toHistoricalBalance.usdcBalance = toBalance.usdcBalance;
   toHistoricalBalance.dydxBalance = toBalance.dydxBalance;
   toHistoricalBalance.transactionHash = transactionHash;
   toHistoricalBalance.contract = to;

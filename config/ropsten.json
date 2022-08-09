@@ -5,5 +5,6 @@
   "dydxGovernorAddress": "0x5Fd2BfBba46f1EA4b5f7D468ddcd3Fa9Aca7Ce7F",
   "safetyModuleAddress": "0xb9B802E34e646D383b85D9B9ad1B2baDf807603E",
   "merkleDistributorAddress": "0x0968e47cBa485006d9CDC6a8eAa94eba779Ca309",
-  "liquidityStakingAddress": "0xf6c7cbb3381c819dD403a1b4B7669fE468cf738f"
+  "liquidityStakingAddress": "0xf6c7cbb3381c819dD403a1b4B7669fE468cf738f",
+  "usdcTokenAddress": "0x4aac889930908ca26e0e6876fbf0651643d2c770"
 }

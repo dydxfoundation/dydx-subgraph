@@ -59,6 +59,7 @@ interface TreasuryTransaction {
   blockNumber: BigInt!
   blockHash: Bytes!
   transactionHash: Bytes!
+  currencySymbol: String!
 }
 
 type CommunityTreasuryTransaction implements TreasuryTransaction @entity {
@@ -71,6 +72,7 @@ type CommunityTreasuryTransaction implements TreasuryTransaction @entity {
   blockNumber: BigInt!
   blockHash: Bytes!
   transactionHash: Bytes!
+  currencySymbol: String!
 }
 
 type GrantsProgramTreasuryTransaction implements TreasuryTransaction @entity {
@@ -83,6 +85,7 @@ type GrantsProgramTreasuryTransaction implements TreasuryTransaction @entity {
   blockNumber: BigInt!
   blockHash: Bytes!
   transactionHash: Bytes!
+  currencySymbol: String!
 }
 
 type CurrentDYDXPrice @entity {
@@ -95,6 +98,7 @@ type Balance @entity {
   "contract address"
   id: ID!
   dydxBalance: BigInt!
+  usdcBalance: BigInt!
 }
 
 type HistoricalBalance @entity {
@@ -104,5 +108,6 @@ type HistoricalBalance @entity {
   timestamp: BigInt!
   transactionHash: Bytes!
   dydxBalance: BigInt!
+  usdcBalance: BigInt!
 }
 

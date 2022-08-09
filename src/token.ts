@@ -1,4 +1,4 @@
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
+import { Address, ethereum } from "@graphprotocol/graph-ts"
 import {
   Transfer,
   DelegatedPowerChanged,
@@ -11,7 +11,7 @@ import {
   COMMUNITY_TREASURY_2_CONTRACT_ADDRESS,
   GRANTS_TREASURY_CONTRACT_ADDRESS,
   saveGrantsProgramTreasuryTransaction,
-  saveBalances
+  saveDydxBalances
 } from './helpers';
 import { handleDelegation, DYDXTokenType } from "./delegate";
 import { updateHourlydYdXTokenExchangeRate } from "./common/timeseries";
@@ -35,7 +35,7 @@ export function handleTokenTransfer(event: Transfer): void {
   }
 
   changeUserTokenBalance(to, amount, true);
-  saveBalances(to, from, amount, event.transaction.hash, event.block.timestamp);
+  saveDydxBalances(to, from, amount, event.transaction.hash, event.block.timestamp);
 
   if (
     from.equals(COMMUNITY_TREASURY_CONTRACT_ADDRESS) ||
@@ -51,7 +51,8 @@ export function handleTokenTransfer(event: Transfer): void {
       event.block.timestamp,
       event.block.number,
       event.block.hash,
-      event.transaction.hash
+      event.transaction.hash,
+      'dydx'
     );
   }
 
@@ -67,7 +68,8 @@ export function handleTokenTransfer(event: Transfer): void {
       event.block.timestamp,
       event.block.number,
       event.block.hash,
-      event.transaction.hash
+      event.transaction.hash,
+      'dydx'
     );
   }
 }

@@ -36,6 +36,30 @@ dataSources:
         - handler: handleBlockUpdate
       file: ./src/token.ts
   - kind: ethereum/contract
+    name: UsdcToken
+    network: {{network}}
+    source:
+      address: "{{usdcTokenAddress}}"
+      abi: UsdcToken
+      startBlock: {{startBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - TreasuryTransaction
+        - CommunityTreasuryTransaction
+        - GrantsProgramTreasuryTransaction
+        - Balance
+        - HistoricalBalance
+      abis:
+        - name: UsdcToken
+          file: ./abi/contracts/tokens/usdc.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleUsdcTokenTransfer
+      file: ./src/usdc.ts
+  - kind: ethereum/contract
     name: DydxGovernor
     network: {{network}}
     source:
