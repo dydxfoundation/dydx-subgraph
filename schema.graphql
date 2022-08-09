@@ -51,8 +51,8 @@ type HourlydYdXTokenExchangeRate @entity {
 
 interface TreasuryTransaction {
   id: ID!
-  to: User!
-  from: User!
+  to: Bytes!
+  from: Bytes!
   amount: BigInt!
   amountUSD: BigDecimal!
   timestamp: BigInt!
@@ -63,8 +63,8 @@ interface TreasuryTransaction {
 
 type CommunityTreasuryTransaction implements TreasuryTransaction @entity {
   id: ID!
-  to: User!
-  from: User!
+  to: Bytes!
+  from: Bytes!
   amount: BigInt!
   amountUSD: BigDecimal!
   timestamp: BigInt!
@@ -75,8 +75,8 @@ type CommunityTreasuryTransaction implements TreasuryTransaction @entity {
 
 type GrantsProgramTreasuryTransaction implements TreasuryTransaction @entity {
   id: ID!
-  to: User!
-  from: User!
+  to: Bytes!
+  from: Bytes!
   amount: BigInt!
   amountUSD: BigDecimal!
   timestamp: BigInt!
@@ -106,23 +106,3 @@ type HistoricalBalance @entity {
   dydxBalance: BigInt!
 }
 
-type CommunityTreasuryHistoricalBalance @entity {
-  id: ID!
-  timestamp: BigInt!
-  transactionHash: Bytes!
-  dydxBalance: BigInt!
-}
-
-type GrantsProgramTreasuryHistoricalBalance @entity {
-  id: ID!
-  timestamp: BigInt!
-  transactionHash: Bytes!
-  dydxBalance: BigInt!
-}
-
-type TotalTreasuryHistoricalBalance @entity {
-  id: ID!
-  timestamp: BigInt!
-  transactionHash: Bytes!
-  dydxBalance: BigInt!
-}

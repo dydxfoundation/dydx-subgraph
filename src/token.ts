@@ -38,8 +38,10 @@ export function handleTokenTransfer(event: Transfer): void {
   saveBalances(to, from, amount, event.transaction.hash, event.block.timestamp);
 
   if (
-    from.toHexString().toLowerCase() == COMMUNITY_TREASURY_CONTRACT_ADDRESS ||
-    from.toHexString().toLowerCase() == COMMUNITY_TREASURY_2_CONTRACT_ADDRESS
+    from.equals(COMMUNITY_TREASURY_CONTRACT_ADDRESS) ||
+    from.equals(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS) ||
+    to.equals(COMMUNITY_TREASURY_CONTRACT_ADDRESS) ||
+    to.equals(COMMUNITY_TREASURY_2_CONTRACT_ADDRESS)
   ) {
     saveCommunityTreasuryTransaction(
       to,
@@ -53,7 +55,10 @@ export function handleTokenTransfer(event: Transfer): void {
     );
   }
 
-  if (from == Address.fromString(GRANTS_TREASURY_CONTRACT_ADDRESS)) {
+  if (
+    from.equals(GRANTS_TREASURY_CONTRACT_ADDRESS) ||
+    to.equals(GRANTS_TREASURY_CONTRACT_ADDRESS)
+  ) {
     saveGrantsProgramTreasuryTransaction(
       to,
       from,
@@ -69,5 +74,9 @@ export function handleTokenTransfer(event: Transfer): void {
 
 export function handleTokenDelegation(event: DelegatedPowerChanged): void {
   handleDelegation(event.params.user, event.params.amount, event.params.delegationType, DYDXTokenType.Token)
+}
+
+export function handleBlockUpdate(block: ethereum.Block): void {
+  updateHourlydYdXTokenExchangeRate(block);
 }
 

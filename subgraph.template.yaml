@@ -22,9 +22,6 @@ dataSources:
         - CurrentDYDXPrice
         - Balance
         - HistoricalBalance
-        - CommunityTreasuryHistoricalBalance
-        - GrantsProgramTreasuryHistoricalBalance
-        - TotalTreasuryHistoricalBalance
       abis:
         - name: DydxToken
           file: ./abi/contracts/governance/token/DydxToken.sol/DydxToken.json
@@ -35,6 +32,8 @@ dataSources:
           handler: handleTokenTransfer
         - event: DelegatedPowerChanged(indexed address,uint256,uint8)
           handler: handleTokenDelegation
+      blockHandlers:
+        - handler: handleBlockUpdate
       file: ./src/token.ts
   - kind: ethereum/contract
     name: DydxGovernor
