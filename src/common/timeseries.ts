@@ -17,7 +17,13 @@ export function updateHourlydYdXTokenExchangeRate(block: ethereum.Block): void {
 
   const timestamp = block.timestamp.toI32();
   const id = createHourlyId(timestamp);
+
   const dydxPriceUsd = getdYdXPriceUsd();
+
+  if (!dydxPriceUsd) {
+    return;
+  }
+
   const roundedTimestamp = (timestamp / 3600) * 3600;
 
   let entity = HourlydYdXTokenExchangeRate.load(id);
