@@ -138,7 +138,7 @@ export function saveCommunityTreasuryTransaction(
   const dydxPriceUsd = getCurrentDYDXPrice();
   const amountUSD = symbol == 'dydx'
     ? amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'))
-    : amount.toBigDecimal().div(BigDecimal.fromString('1e18'));
+    : amount.toBigDecimal().div(BigDecimal.fromString('1e6'));
 
   tx.to = to;
   tx.from = from;
@@ -176,7 +176,7 @@ export function saveGrantsProgramTreasuryTransaction(
   const dydxPriceUsd = getCurrentDYDXPrice();
   const amountUSD = symbol == 'dydx'
     ? amount.toBigDecimal().times(dydxPriceUsd).div(BigDecimal.fromString('1e18'))
-    : amount.toBigDecimal().div(BigDecimal.fromString('1e18'));
+    : amount.toBigDecimal().div(BigDecimal.fromString('1e6'));
 
   tx.to = to;
   tx.from = from;
