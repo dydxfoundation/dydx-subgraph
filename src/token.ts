@@ -1,4 +1,4 @@
-import { Address, ethereum } from "@graphprotocol/graph-ts"
+import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
 import {
   Transfer,
   DelegatedPowerChanged,
@@ -15,6 +15,7 @@ import {
 } from './helpers';
 import { handleDelegation, DYDXTokenType } from "./delegate";
 import { updateHourlydYdXTokenExchangeRate } from "./common/timeseries";
+import { BIGINT_ZERO } from "./common/constants";
 
 export function handleTokenTransfer(event: Transfer): void {
   let from: Address = event.params.from;
@@ -79,6 +80,10 @@ export function handleTokenDelegation(event: DelegatedPowerChanged): void {
 }
 
 export function handleBlockUpdate(block: ethereum.Block): void {
+  if (!block.number.mod(BigInt.fromI32(150)).equals(BIGINT_ZERO)) {
+    return;
+  }
+
   updateHourlydYdXTokenExchangeRate(block);
 }
 
