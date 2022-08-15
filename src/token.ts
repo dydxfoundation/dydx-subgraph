@@ -53,6 +53,7 @@ export function handleTokenTransfer(event: Transfer): void {
       event.block.number,
       event.block.hash,
       event.transaction.hash,
+      event.logIndex,
       'dydx'
     );
   }

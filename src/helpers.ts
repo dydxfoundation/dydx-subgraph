@@ -124,9 +124,10 @@ export function saveCommunityTreasuryTransaction(
   blockNumber: BigInt,
   blockHash: Bytes,
   transactionHash: Bytes,
+  logIndex: BigInt,
   symbol: string
 ): void {
-  const id = `community-${symbol}-${txHash.toHexString()}`;
+  const id = `community-${symbol}-${txHash.toHexString()}-${logIndex.toString()}`;
 
   let tx: CommunityTreasuryTransaction | null =
     CommunityTreasuryTransaction.load(id)
