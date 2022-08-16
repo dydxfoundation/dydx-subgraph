@@ -163,9 +163,10 @@ export function saveGrantsProgramTreasuryTransaction(
   blockNumber: BigInt,
   blockHash: Bytes,
   transactionHash: Bytes,
+  logIndex: BigInt,
   symbol: string
 ): void {
-  const id = `grants-${symbol}-${txHash.toHexString()}`;
+  const id = `grants-${symbol}-${txHash.toHexString()}-${logIndex.toString()}`;
   
   let tx: GrantsProgramTreasuryTransaction | null =
     GrantsProgramTreasuryTransaction.load(id)

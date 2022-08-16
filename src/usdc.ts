@@ -48,6 +48,7 @@ export function handleUsdcTokenTransfer(event: Transfer): void {
       event.block.number,
       event.block.hash,
       event.transaction.hash,
+      event.logIndex,
       'usdc'
     );
   }
