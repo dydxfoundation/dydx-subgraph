@@ -9,6 +9,7 @@ type User @entity {
   tokenProposingPower: BigInt!
   stakedTokenVotingPower: BigInt!
   stakedTokenProposingPower: BigInt!
+  mostRecentDepositToPerpetualAmount: BigInt!
 }
 
 type Proposal @entity {
@@ -38,4 +39,13 @@ enum IncentivesModule {
   MerkleDistributor
   SafetyModule
   LiquidityStaking
+}
+
+type Deposit @entity {
+  "ID attribute is the transaction Hash of the depositToPerpetual"
+  id: ID!
+  address: String!
+  block: BigInt!
+  blockTimestamp: BigInt!
+  depositAmount: BigInt!
 }
