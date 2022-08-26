@@ -1,6 +1,7 @@
 {
   "network": "mainnet",
-  "startBlock": 12809555,
+  "startBlock": 11834295,
+  "dydxPerpetualAddress": "0xD54f502e184B6B739d7D27a6410a67dc462D69c8",
   "dydxTokenAddress": "0x92D6C1e31e14520e676a687F0a93788B716BEff5",
   "dydxGovernorAddress": "0x7E9B1672616FF6D6629Ef2879419aaE79A9018D2",
   "safetyModuleAddress": "0x65f7BA4Ec257AF7c55fd5854E5f6356bBd0fb8EC",

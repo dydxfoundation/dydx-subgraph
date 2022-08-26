@@ -19,6 +19,7 @@ export function getUser(address: Address): User {
     user.tokenProposingPower = BigInt.fromI32(0)
     user.stakedTokenVotingPower = BigInt.fromI32(0)
     user.stakedTokenProposingPower = BigInt.fromI32(0)
+    user.mostRecentDepositToPerpetualAmount = BigInt.fromI32(0)
   }
 
   return user;
